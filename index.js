@@ -2,8 +2,11 @@ const express = require("express")
 const mongoose = require("mongoose")
 const Transaction = require("./models/transaction.model.js")
 // const productRoute = require("../simple-crud-app/routes/product.route.js");
+const cors = require("cors")
+require("dotenv").config()
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
@@ -78,13 +81,16 @@ app.delete("/api/transaction/:id", async (req, res) => {
   }
 })
 
+const PORT = process.env.PORT || 3000
+
 mongoose
   .connect(
-    "mongodb+srv://admin:admin123@backenddb.pe8lc.mongodb.net/GirlHacks?retryWrites=true&w=majority&appName=BackendDB"
+    process.env.MG_URL ||
+      "mongodb+srv://admin:admin123@backenddb.pe8lc.mongodb.net/GirlHacks?retryWrites=true&w=majority&appName=BackendDB"
   )
   .then(() => {
     console.log("connected")
-    app.listen(3000, () => {
+    app.listen(PORT, () => {
       console.log("Hemlo hemlo on 3000")
     })
   })
